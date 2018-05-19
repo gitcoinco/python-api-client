@@ -4,6 +4,7 @@ deploy:
   provider: pypi
   user: gitcoin
   password:
+    secure: "placeholder"
   distributions: "sdist bdist_wheel"
   on:
     tags: true
@@ -17,7 +18,6 @@ matrix:
 install: pip install .[test]
 
 script:
-  - make build
   - pytest
 
 notifications:

@@ -38,7 +38,7 @@ setup(
     packages=find_packages(exclude=['docs', 'tests']),
     install_requires=['requests'],
     extras_require={
-        'test': ['coverage', 'pytest', 'isort'],
+        'test': ['coverage', 'pytest', 'isort', 'pytest-isort', 'pytest-cov'],
         'deploy': ['twine', 'wheel'],
     },
     project_urls={
