@@ -12,7 +12,7 @@ with open(path.join(here, 'README.md'), encoding='utf-8') as f:
 
 setup(
     name='gitcoin',
-    version='0.1.0',
+    version='0.0.1',
     description='The Gitcoin.co python API client',
     long_description=long_description,
     long_description_content_type='text/markdown',
