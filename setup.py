@@ -37,8 +37,9 @@ setup(
     keywords='gitcoin api client bounties bounty rest',
     packages=find_packages(exclude=['docs', 'tests']),
     install_requires=['requests'],
+    setup_requires=['pytest-runner'],
+    tests_require=['pytest', 'pytest-isort', 'pytest-cov', 'coverage', 'isort'],
     extras_require={
-        'test': ['coverage', 'pytest', 'isort', 'pytest-isort', 'pytest-cov'],
         'deploy': ['twine', 'wheel'],
     },
     project_urls={

@@ -12,8 +12,11 @@ deploy: install ## Deploy package and wheel to PyPi.
 deploy-test: install ## Deploy package and wheel to PyPi test environment.
 	@twine upload --repository-url https://test.pypi.org/legacy/ dist/*
 
-install: ## Install all requirements.
-	@pip install -e .[test]
+install: ## Install local, editable version of the gitcoin client.
+	@pip install -e .
+
+test: ## Run pytest.
+	@python setup.py test
 
 help:
 	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | sort | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-30s\033[0m %s\n", $$1, $$2}'

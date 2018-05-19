@@ -15,10 +15,7 @@ matrix:
     - python: 3.5
     - python: 3.6
 
-install: pip install .[test]
-
-script:
-  - pytest
+install: pip install .
 
 notifications:
   email: false
