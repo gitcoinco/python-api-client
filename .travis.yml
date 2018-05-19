@@ -9,6 +9,10 @@ deploy:
   on:
     tags: true
 
+addons:
+  apt:
+    update: true
+
 matrix:
   include:
     - python: 3.4
