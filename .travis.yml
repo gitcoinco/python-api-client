@@ -1,0 +1,24 @@
+language: python
+
+deploy:
+  provider: pypi
+  user: gitcoin
+  password:
+  distributions: "sdist bdist_wheel"
+  on:
+    tags: true
+
+matrix:
+  include:
+    - python: 3.4
+    - python: 3.5
+    - python: 3.6
+
+install: pip install .[test]
+
+script:
+  - make build
+  - pytest
+
+notifications:
+  email: false
