@@ -101,6 +101,7 @@ class TestGitcoinDryRun():
     def test_no_normalize(self):
         class ExtendedBountyConfig(BountyConfig):
             def __init__(self):
+                super().__init__()
                 self.params['no_normalize'] = (True, None)
 
         api = Gitcoin()
@@ -121,3 +122,14 @@ class TestGitcoinDryRun():
         api = Gitcoin()
         with pytest.raises(ValueError):  # ValueError only in mock setup
             result = api.bounties.add_param_unchecked('raise_for_status', True).all()
+
+    def test_extending_config_does_not_leak(self):
+        class ExtendedBountyConfig(BountyConfig):
+            def __init__(self):
+                super().__init__()
+                self.params['extra_config'] = (True, None)
+
+        extended_bounty_config = ExtendedBountyConfig()
+        normal_bounty_config = BountyConfig()
+        with pytest.raises(KeyError):
+            normal_bounty_config.get('extra_config')

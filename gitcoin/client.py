@@ -1,9 +1,13 @@
+"""Define the Gitcoin API client."""
+
 import requests
 
 
 class Config:
     """Define Base Class for API Endpoint Config."""
-    params = {}
+
+    def __init__(self):
+        self.params = {}
 
     def has(self, name):
         """Tell if a setting for 'name' was defined."""
@@ -20,26 +24,28 @@ class Config:
 
 class BountyConfig(Config):
     """Define 'bounties' API Endpoint Config."""
-    params = {
-        'raw_data': (True, str),
-        'experience_level': (True, str),
-        'project_length': (True, str),
-        'bounty_type': (True, str),
-        'bounty_owner_address': (True, str),
-        'idx_status': (True, str),
-        'network': (True, str),
-        'bounty_owner_github_username': (True, str),
-        'standard_bounties_id': (True, str),
-        'pk__gt': (False, int),
-        'started': (False, str),
-        'is_open': (False, bool),
-        'github_url': (True, str),
-        'fulfiller_github_username': (False, str),
-        'interested_github_username': (False, str),
-        'order_by': (False, str),
-        'limit': (False, int),
-        'offset': (False, int)
-    }
+
+    def __init__(self):
+        self.params = {
+            'raw_data': (True, str),
+            'experience_level': (True, str),
+            'project_length': (True, str),
+            'bounty_type': (True, str),
+            'bounty_owner_address': (True, str),
+            'idx_status': (True, str),
+            'network': (True, str),
+            'bounty_owner_github_username': (True, str),
+            'standard_bounties_id': (True, str),
+            'pk__gt': (False, int),
+            'started': (False, str),
+            'is_open': (False, bool),
+            'github_url': (True, str),
+            'fulfiller_github_username': (False, str),
+            'interested_github_username': (False, str),
+            'order_by': (False, str),
+            'limit': (False, int),
+            'offset': (False, int)
+        }
 
 
 class Endpoint:
@@ -144,6 +150,6 @@ class Gitcoin:
     def bounties(self):
         """Wrap the 'bounties' API endpoint."""
         url = self.urls['bounties']
-        endpointClass = self.classes['endpoint']
-        configClass = self.classes['bounties_list_config']
-        return endpointClass(url, configClass())
+        endpoint_class = self.classes['endpoint']
+        config_class = self.classes['bounties_list_config']
+        return endpoint_class(url, config_class())
