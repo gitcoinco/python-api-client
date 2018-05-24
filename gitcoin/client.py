@@ -1,5 +1,6 @@
 import requests
 
+
 class Config:
     """Define Base Class for API Endpoint Config."""
     params = {}
