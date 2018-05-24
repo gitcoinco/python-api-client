@@ -7,6 +7,7 @@ class Config:
     """Define Base Class for API Endpoint Config."""
 
     def __init__(self):
+        """Init empty params container."""
         self.params = {}
 
     def has(self, name):
@@ -26,6 +27,8 @@ class BountyConfig(Config):
     """Define 'bounties' API Endpoint Config."""
 
     def __init__(self):
+        """Init params container for 'bounties' filters etc."""
+        super().__init__()
         self.params = {
             'raw_data': (True, str),
             'experience_level': (True, str),
@@ -110,9 +113,9 @@ class Endpoint:
         self.del_param('offset')
         return self._request_get()
 
-    def get(self, pk):
+    def get(self, primary_key):
         """Get 1 object by primary key."""
-        return self._request_get('/'.join((self.url, str(pk))))
+        return self._request_get('/'.join((self.url, str(primary_key))))
 
     def _request_get(self, url=None):
         """Fire the actual HTTP GET request as configured."""
@@ -138,13 +141,13 @@ class Gitcoin:
         self.urls = {}
         self.set_url('bounties', 'https://gitcoin.co/api/v0.1/bounties')
 
-    def set_class(self, id, cls):
+    def set_class(self, cls_id, cls):
         """Inject class dependency, overriding the default class."""
-        self.classes[id] = cls
+        self.classes[cls_id] = cls
 
-    def set_url(self, id, url):
+    def set_url(self, cls_id, url):
         """Configure API URL, overriding the default URL."""
-        self.urls[id] = url
+        self.urls[cls_id] = url
 
     @property
     def bounties(self):
