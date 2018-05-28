@@ -71,7 +71,34 @@ class TestGitcoinDryRun():
             },
             'kwargs': {},
         }
-        result = api.bounties.filter(bounty_type='Feature').del_param('bounty_type').filter(bounty_type='Bug').get_page()
+        result = api.bounties.filter(bounty_type='Feature')._del_param('bounty_type').filter(bounty_type='Bug').get_page()
+        assert expected == result
+
+    def test_reset_all_params(self):
+        api = Gitcoin()
+        bounties_api = api.bounties
+        expected = {
+            'url': 'https://gitcoin.co/api/v0.1/bounties',
+            'params': {
+                'bounty_type': 'Feature',
+                'offset': '0',
+                'limit': '25',
+            },
+            'kwargs': {},
+        }
+        result = bounties_api.filter(bounty_type='Feature').get_page()
+        assert expected == result
+        bounties_api._reset_all_params()
+        expected = {
+            'url': 'https://gitcoin.co/api/v0.1/bounties',
+            'params': {
+                'bounty_type': 'Bug',
+                'offset': '0',
+                'limit': '25',
+            },
+            'kwargs': {},
+        }
+        result = bounties_api.filter(bounty_type='Bug').get_page()
         assert expected == result
 
     def test_order_by(self):
@@ -121,7 +148,7 @@ class TestGitcoinDryRun():
     def test_raise_for_status(self):
         api = Gitcoin()
         with pytest.raises(ValueError):  # ValueError only in mock setup
-            result = api.bounties.add_param_unchecked('raise_for_status', True).all()
+            result = api.bounties._add_param_unchecked('raise_for_status', True).all()
 
     def test_extending_config_does_not_leak(self):
         class ExtendedBountyConfig(BountyConfig):
