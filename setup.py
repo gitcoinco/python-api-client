@@ -38,7 +38,7 @@ setup(
     packages=find_packages(exclude=['docs', 'tests']),
     install_requires=['requests'],
     setup_requires=['pytest-runner'],
-    tests_require=['pytest', 'pytest-isort', 'pytest-cov', 'coverage', 'isort'],
+    tests_require=['pytest', 'pytest-isort', 'pytest-cov', 'coverage', 'isort', 'responses'],
     extras_require={
         'deploy': ['twine', 'wheel'],
     },
