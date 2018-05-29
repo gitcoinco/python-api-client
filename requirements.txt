@@ -2,6 +2,7 @@ apipkg==1.4
 attrs==18.1.0
 certifi==2018.4.16
 chardet==3.0.4
+cookies==2.2.1
 coverage==4.5.1
 execnet==1.5.0
 flake8==3.5.0
@@ -19,6 +20,7 @@ pytest-cov==2.5.1
 pytest-isort==0.2.0
 pytest-runner==4.2
 requests==2.18.4
+responses==0.9.0
 six==1.11.0
 urllib3==1.22
 yapf==0.22.0

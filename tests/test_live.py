@@ -1,3 +1,4 @@
+import gitcoin.validation
 import pytest
 import requests
 from gitcoin import BountyConfig, Gitcoin
@@ -13,7 +14,8 @@ def assert_is_bounty(bounty):
     assert 0 < bounty['pk']
 
 
-class TestGitcoinLiveBountiesAllFilters():
+@pytest.mark.skipif(not pytest.config.getoption('--liveapi'), reason='Please only test against the live API manually by specifying --live-api.')
+class TestGitcoinLiveBounties():
 
     filter_examples = {
         # 'raw_data': ['"'],  ## It's unclear what good examples would be.
@@ -38,12 +40,10 @@ class TestGitcoinLiveBountiesAllFilters():
         for filter_name, examples in self.filter_examples.items():
             for example in examples:
                 filter = {filter_name:example}
+                # try:
                 result = api.bounties.filter(**filter).get_page(per_page=1)
+                # except
                 assert_is_list_of_bounties(result)
-                # assert list == type(result)
-                # if len(result):
-                #     assert int == type(result[0]['pk'])
-                #     assert 0 < result[0]['pk']
 
     def test_multiple_value_filters(self):
         api = Gitcoin()
@@ -57,30 +57,9 @@ class TestGitcoinLiveBountiesAllFilters():
                     bounties.filter(**filter)
                 result = bounties.get_page(per_page=1)
                 assert_is_list_of_bounties(result)
-                # assert list == type(result)
-                # if len(result):
-                #     assert int == type(result[0]['pk'])
-                #     assert 0 < result[0]['pk']
 
     def test_order_by(self):
-        sort_field_names = [
-            'web3_type', 'title', 'web3_created', 'value_in_token',
-            'token_name', 'token_address', 'bounty_type', 'project_length',
-            'experience_level', 'github_url', 'github_comments',
-            'bounty_owner_address', 'bounty_owner_email',
-            'bounty_owner_github_username', 'bounty_owner_name', 'is_open',
-            'expires_date', 'raw_data', 'metadata', 'current_bounty',
-            '_val_usd_db', 'contract_address', 'network',
-            'idx_experience_level', 'idx_project_length', 'idx_status',
-            'issue_description', 'standard_bounties_id', 'num_fulfillments',
-            'balance', 'accepted', 'interested', 'interested_comment',
-            'submissions_comment', 'override_status', 'last_comment_date',
-            'fulfillment_accepted_on', 'fulfillment_submitted_on',
-            'fulfillment_started_on', 'canceled_on',
-            'snooze_warnings_for_days', 'token_value_time_peg',
-            'token_value_in_usdt', 'value_in_usdt_now', 'value_in_usdt',
-            'value_in_eth', 'value_true', 'privacy_preferences'
-        ]
+        sort_field_names = gitcoin.validation.options['order_by']
         api = Gitcoin()
         for field_name in sort_field_names:
             for direction in [field_name, ''.join(('-', field_name))]:

@@ -2,6 +2,7 @@
 
 import requests
 
+import gitcoin.validation
 
 class Config:
     """Define Base Class for API Endpoint Config."""
@@ -30,12 +31,12 @@ class BountyConfig(Config):
         """Init params container for 'bounties' filters etc."""
         super().__init__()
         self.params = {
-            'experience_level': (True, str),
-            'project_length': (True, str),
-            'bounty_type': (True, str),
+            'experience_level': (True, gitcoin.validation.experience_level),
+            'project_length': (True, gitcoin.validation.project_length),
+            'bounty_type': (True, gitcoin.validation.bounty_type),
             'bounty_owner_address': (True, str),
             'bounty_owner_github_username': (True, str),
-            'idx_status': (True, str),
+            'idx_status': (True, gitcoin.validation.idx_status),
             'network': (True, str),
             'standard_bounties_id': (True, int),
             'pk__gt': (False, int),
@@ -45,7 +46,7 @@ class BountyConfig(Config):
             'fulfiller_github_username': (False, str),
             'interested_github_username': (False, str),
             'raw_data': (True, str),
-            'order_by': (False, str),
+            'order_by': (False, gitcoin.validation.order_by),
             'limit': (False, int),
             'offset': (False, int)
         }
@@ -119,7 +120,7 @@ class Endpoint:
 
     def get(self, primary_key):
         """Retrieve one resource by primary key."""
-        return self._request_get('/'.join((self.url, str(primary_key))))
+        return self._request_get(''.join((self.url, str(primary_key))))
 
     def _request_get(self, url=None):
         """Fire the actual HTTP GET request as configured."""
@@ -143,7 +144,7 @@ class Gitcoin:
         self.set_class('endpoint', Endpoint)
         self.set_class('bounties_list_config', BountyConfig)
         self.urls = {}
-        self.set_url('bounties', 'https://gitcoin.co/api/v0.1/bounties')
+        self.set_url('bounties', 'https://gitcoin.co/api/v0.1/bounties/')
 
     def set_class(self, cls_id, cls):
         """Inject class dependency, overriding the default class."""
