@@ -9,7 +9,9 @@ from gitcoin import BountyConfig, Gitcoin
 
 def are_url_queries_equal(url1, url2, *more_urls):
     queries = []
-    for url in [url1, url2, *more_urls]:
+    urls = [url1, url2]
+    urls.extend(more_urls)
+    for url in urls:
         query_string = urllib.parse.urlparse(url).query
         query = urllib.parse.parse_qs(query_string)
         queries.append(query)
