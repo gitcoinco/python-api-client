@@ -1,8 +1,8 @@
 """Define the Gitcoin API client."""
 
+import gitcoin.validation
 import requests
 
-import gitcoin.validation
 
 class Config:
     """Define Base Class for API Endpoint Config."""
