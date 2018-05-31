@@ -3,7 +3,7 @@
 # Valid parameter values as seen at
 # https://github.com/gitcoinco/web/blob/84babc30611c281c817582b4d677dda6366def83/app/dashboard/models.py#L119-L168
 options = {
-    'experience_level': ['Beginner', 'Advanced', 'Intermediate', 'Unknown'],
+    'experience_level': ['Beginner', 'Intermediate', 'Advanced', 'Unknown'],
     'project_length': ['Hours', 'Days', 'Weeks', 'Months', 'Unknown'],
     'bounty_type': ['Bug', 'Security', 'Feature', 'Unknown'],
     'idx_status': ['cancelled', 'done', 'expired', 'open', 'started', 'submitted', 'unknown'],
