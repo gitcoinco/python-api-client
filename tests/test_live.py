@@ -59,7 +59,7 @@ class TestGitcoinLiveBounties():
                 assert_is_list_of_bounties(result)
 
     def test_order_by(self):
-        sort_field_names = gitcoin.validation.options['order_by']
+        sort_field_names = gitcoin.validation.OPTIONS['order_by']
         api = Gitcoin()
         for field_name in sort_field_names:
             for direction in [field_name, ''.join(('-', field_name))]:
