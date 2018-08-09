@@ -19,10 +19,10 @@ test: ## Run pytest.
 	@python setup.py test
 
 fix-isort: ## Run isort against python files in the project directory.
-	@isort -rc --atomic .
+	@isort -rc --atomic ./gitcoin ./tests
 
 fix-yapf: ## Run yapf against any included or newly introduced Python code.
-	@yapf -i -r -p .
+	@yapf -i -r -p ./gitcoin ./tests
 
 fix: fix-isort fix-yapf ## Attempt to run all fixes against the project directory.
 
