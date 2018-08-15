@@ -1,29 +1,26 @@
 language: python
-
+sudo: true
+dist: xenial
+cache: pip
 deploy:
   provider: pypi
   user: gitcoin
   password:
-    secure: "placeholder"
-  distributions: "sdist bdist_wheel"
+    secure: HxDdN1nSHTZ7uzXascdkmbHqwM0QoF1BcOmeTyn1EODov+tiJP20p6aFeMyeypNHVGACkBI0zF6NKg2/WLhMm8Se4EmnPZrTcTDbJjqpgnGDeMsLwLoAjl8TmZNMLw937GQcv/A04bgXKMWZkh5OSFxQePPTnqe4+ElA8RCURe+XFu75XHcjpWa+Nt3jBcePB7fIwx/VYtyjjwfRv5rJ4HKB7IhLa0jEMSpcKY9a/RtZbzxUNTakK7apk4Ra8K/uYhdg/cFaI5CyY37nc2mVOTKWwTqMQfIeeAkknFgVgjWTWoSIuengc+MpHpqliNdDrI/5creJZYJFQ5lUB8X3l6XsXDguSpImnPyr9jCI4AruoWL9OM1o+AhdYGvbdbNVGVIMYe1UMP7NXQ2zubXNVb4yE6+WCFfh1lMsxDfxOmD1mro1BRlD8QU5f0zSkxyc8ER6W4b6C7hPIoFqtRfwV9T5XO41U+Gbb4AN6fn65V27N8l1FP61EK3WO8KaLhePnnGz1nuhaOMPxFmhpbSEQVXzD2nYE5xqH8O87qJDZli23A9WBYHexp6PTh5s63ehtImcET25AofFH5WCImmZH2iaoo48oZs02KrzUdtjYHcwoeJP/+mCp5vfXSTD8FtgF088WM/mnLbVQzNtBKfMDAvF7LrQ5zRcYqmVwmt4bPA=
+  distributions: sdist bdist_wheel
   on:
     tags: true
-
 addons:
   apt:
     update: true
-
 matrix:
   include:
-    - python: 3.4
-    - python: 3.5
-    - python: 3.6
-    # - python: 3.7 # As of 2018-07-18T13-10-00Z, Python 3.7 is not available on Travis just yet.
-
+  - python: 3.4
+  - python: 3.5
+  - python: 3.6
+  - python: 3.7
 install: pip install .
-
 script:
-  - python setup.py test
-
+- python setup.py test
 notifications:
   email: false
