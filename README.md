@@ -1,5 +1,7 @@
 # Gitcoin Python API Client
 
+[![Build Status](https://travis-ci.com/gitcoinco/python-api-client.svg?branch=master)](https://travis-ci.com/gitcoinco/python-api-client)
+
 This Python package provides the `bounties` endpoint of the Gitcoin API, which allows you to:
 
 - list all bounties
