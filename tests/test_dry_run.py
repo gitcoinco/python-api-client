@@ -16,7 +16,7 @@ def are_url_queries_equal(url1, url2, *more_urls):
         query = urllib.parse.parse_qs(query_string)
         queries.append(query)
     for i in range(1, len(queries)):
-        if not (queries[i-1] == queries[i]):
+        if not (queries[i - 1] == queries[i]):
             return False
     return True
 
@@ -27,9 +27,13 @@ class TestGitcoinDryRun():
         assert are_url_queries_equal('https://google.com', 'https://google.com')
         assert not are_url_queries_equal('https://google.com?q=1', 'https://google.com?q=2')
         assert not are_url_queries_equal('https://google.com?q=1', 'https://google.com?q=2', 'https://google.com?q=3')
-        assert not are_url_queries_equal('https://google.com?q=1', 'https://google.com?q=2', 'https://google.com?q=3', 'https://google.com?q=4')
+        assert not are_url_queries_equal(
+            'https://google.com?q=1', 'https://google.com?q=2', 'https://google.com?q=3', 'https://google.com?q=4'
+        )
         assert are_url_queries_equal('https://google.com?q=1', 'https://google.com?q=1', 'https://google.com?q=1')
-        assert are_url_queries_equal('https://google.com?q=1', 'https://google.com?q=1', 'https://google.com?q=1', 'https://google.com?q=1')
+        assert are_url_queries_equal(
+            'https://google.com?q=1', 'https://google.com?q=1', 'https://google.com?q=1', 'https://google.com?q=1'
+        )
         assert are_url_queries_equal('https://google.com?q=1&r=2', 'https://google.com?r=2&q=1')
         with pytest.raises(TypeError):
             are_url_queries_equal('https://google.com?q=1')
@@ -46,94 +50,77 @@ class TestGitcoinDryRun():
 
     @responses.activate
     def test_all(self):
-        responses.add(responses.GET, 'https://gitcoin.co/api/v0.1/bounties/',
-                      json={'mock': 'mock'}, status=200)
+        responses.add(responses.GET, 'https://gitcoin.co/api/v0.1/bounties/', json={'mock': 'mock'}, status=200)
         api = Gitcoin()
         result = api.bounties.all()
         assert result == {'mock': 'mock'}
         assert len(responses.calls) == 1
-        assert are_url_queries_equal(
-            responses.calls[0].request.url,
-            'https://gitcoin.co/api/v0.1/bounties/'
-        )
+        assert are_url_queries_equal(responses.calls[0].request.url, 'https://gitcoin.co/api/v0.1/bounties/')
 
     @responses.activate
     def test_filter_pk__gt(self):
-        responses.add(responses.GET, 'https://gitcoin.co/api/v0.1/bounties/',
-                      json={'mock': 'mock'}, status=200)
+        responses.add(responses.GET, 'https://gitcoin.co/api/v0.1/bounties/', json={'mock': 'mock'}, status=200)
         api = Gitcoin()
         result = api.bounties.filter(pk__gt=100).all()
         assert result == {'mock': 'mock'}
         assert len(responses.calls) == 1
-        assert are_url_queries_equal(
-            responses.calls[0].request.url,
-            'https://gitcoin.co/api/v0.1/bounties/?pk__gt=100'
-        )
+        assert are_url_queries_equal(responses.calls[0].request.url, 'https://gitcoin.co/api/v0.1/bounties/?pk__gt=100')
 
     @responses.activate
     def test_filter_experience_level(self):
-        responses.add(responses.GET, 'https://gitcoin.co/api/v0.1/bounties/',
-                      json={'mock': 'mock'}, status=200)
+        responses.add(responses.GET, 'https://gitcoin.co/api/v0.1/bounties/', json={'mock': 'mock'}, status=200)
         api = Gitcoin()
         result = api.bounties.filter(experience_level='Beginner').all()
         assert result == {'mock': 'mock'}
         assert len(responses.calls) == 1
         assert are_url_queries_equal(
-            responses.calls[0].request.url,
-            'https://gitcoin.co/api/v0.1/bounties/?experience_level=Beginner'
+            responses.calls[0].request.url, 'https://gitcoin.co/api/v0.1/bounties/?experience_level=Beginner'
         )
         with pytest.raises(ValueError):
             api.bounties.filter(experience_level='Rockstar')
 
     @responses.activate
     def test_filter_project_length(self):
-        responses.add(responses.GET, 'https://gitcoin.co/api/v0.1/bounties/',
-                      json={'mock': 'mock'}, status=200)
+        responses.add(responses.GET, 'https://gitcoin.co/api/v0.1/bounties/', json={'mock': 'mock'}, status=200)
         api = Gitcoin()
         result = api.bounties.filter(project_length='Hours').all()
         assert result == {'mock': 'mock'}
         assert len(responses.calls) == 1
         assert are_url_queries_equal(
-            responses.calls[0].request.url,
-            'https://gitcoin.co/api/v0.1/bounties/?project_length=Hours'
+            responses.calls[0].request.url, 'https://gitcoin.co/api/v0.1/bounties/?project_length=Hours'
         )
         with pytest.raises(ValueError):
             api.bounties.filter(project_length='Minutes')
 
     @responses.activate
     def test_filter_bounty_type(self):
-        responses.add(responses.GET, 'https://gitcoin.co/api/v0.1/bounties/',
-                      json={'mock': 'mock'}, status=200)
+        responses.add(responses.GET, 'https://gitcoin.co/api/v0.1/bounties/', json={'mock': 'mock'}, status=200)
         api = Gitcoin()
         result = api.bounties.filter(bounty_type='Bug').all()
         assert result == {'mock': 'mock'}
         assert len(responses.calls) == 1
         assert are_url_queries_equal(
-            responses.calls[0].request.url,
-            'https://gitcoin.co/api/v0.1/bounties/?bounty_type=Bug'
+            responses.calls[0].request.url, 'https://gitcoin.co/api/v0.1/bounties/?bounty_type=Bug'
         )
         with pytest.raises(ValueError):
             api.bounties.filter(bounty_type='Fancy')
 
     @responses.activate
     def test_filter_idx_status(self):
-        responses.add(responses.GET, 'https://gitcoin.co/api/v0.1/bounties/',
-                      json={'mock': 'mock'}, status=200)
+        responses.add(responses.GET, 'https://gitcoin.co/api/v0.1/bounties/', json={'mock': 'mock'}, status=200)
         api = Gitcoin()
         result = api.bounties.filter(idx_status='started').all()
         assert result == {'mock': 'mock'}
         assert len(responses.calls) == 1
         assert are_url_queries_equal(
-            responses.calls[0].request.url,
-            'https://gitcoin.co/api/v0.1/bounties/?idx_status=started'
+            responses.calls[0].request.url, 'https://gitcoin.co/api/v0.1/bounties/?idx_status=started'
         )
         with pytest.raises(ValueError):
             api.bounties.filter(idx_status='undone')
 
     @responses.activate
     def test_filter_2x_bounty_type_paged(self):
-        responses.add(responses.GET, 'https://gitcoin.co/api/v0.1/bounties/',
-                      json={'mock': 'mock'}, status=200)
+        responses.add(responses.GET, 'https://gitcoin.co/api/v0.1/bounties/', json={'mock': 'mock'}, status=200)
         api = Gitcoin()
         result = api.bounties.filter(bounty_type='Feature').filter(bounty_type='Bug').get_page()
         assert result == {'mock': 'mock'}
@@ -145,10 +132,10 @@ class TestGitcoinDryRun():
 
     @responses.activate
     def test_del_param(self):
-        responses.add(responses.GET, 'https://gitcoin.co/api/v0.1/bounties/',
-                      json={'mock': 'mock'}, status=200)
+        responses.add(responses.GET, 'https://gitcoin.co/api/v0.1/bounties/', json={'mock': 'mock'}, status=200)
         api = Gitcoin()
-        result = api.bounties.filter(bounty_type='Feature')._del_param('bounty_type').filter(bounty_type='Bug').get_page()
+        result = api.bounties.filter(bounty_type='Feature') \
+                ._del_param('bounty_type').filter(bounty_type='Bug').get_page()
         assert result == {'mock': 'mock'}
         assert len(responses.calls) == 1
         assert are_url_queries_equal(
@@ -158,8 +145,7 @@ class TestGitcoinDryRun():
 
     @responses.activate
     def test_reset_all_params(self):
-        responses.add(responses.GET, 'https://gitcoin.co/api/v0.1/bounties/',
-                      json={'mock': 'mock'}, status=200)
+        responses.add(responses.GET, 'https://gitcoin.co/api/v0.1/bounties/', json={'mock': 'mock'}, status=200)
         api = Gitcoin()
         bounties_api = api.bounties
 
@@ -177,14 +163,12 @@ class TestGitcoinDryRun():
         assert result == {'mock': 'mock'}
         assert len(responses.calls) == 2
         assert are_url_queries_equal(
-            responses.calls[1].request.url,
-            'https://gitcoin.co/api/v0.1/bounties/?bounty_type=Bug&offset=0&limit=25'
+            responses.calls[1].request.url, 'https://gitcoin.co/api/v0.1/bounties/?bounty_type=Bug&offset=0&limit=25'
         )
 
     @responses.activate
     def test_order_by(self):
-        responses.add(responses.GET, 'https://gitcoin.co/api/v0.1/bounties/',
-                      json={'mock': 'mock'}, status=200)
+        responses.add(responses.GET, 'https://gitcoin.co/api/v0.1/bounties/', json={'mock': 'mock'}, status=200)
         api = Gitcoin()
 
         result = api.bounties.order_by('-project_length').get_page()
@@ -208,8 +192,7 @@ class TestGitcoinDryRun():
 
     @responses.activate
     def test_get(self):
-        responses.add(responses.GET, 'https://gitcoin.co/api/v0.1/bounties/123',
-                      json={'mock': 'mock'}, status=200)
+        responses.add(responses.GET, 'https://gitcoin.co/api/v0.1/bounties/123', json={'mock': 'mock'}, status=200)
         api = Gitcoin()
         result = api.bounties.get(123)
         assert result == {'mock': 'mock'}
@@ -218,7 +201,9 @@ class TestGitcoinDryRun():
 
     @responses.activate
     def test_no_normalize(self):
+
         class ExtendedBountyConfig(BountyConfig):
+
             def __init__(self):
                 super().__init__()
                 self.params['no_normalize'] = (True, None)
@@ -226,8 +211,7 @@ class TestGitcoinDryRun():
         api = Gitcoin()
         api.set_class('bounties_list_config', ExtendedBountyConfig)
 
-        responses.add(responses.GET, 'https://gitcoin.co/api/v0.1/bounties/',
-                      json={'mock': 'mock'}, status=200)
+        responses.add(responses.GET, 'https://gitcoin.co/api/v0.1/bounties/', json={'mock': 'mock'}, status=200)
 
         result = api.bounties.filter(no_normalize='not_normal').get_page()
         assert result == {'mock': 'mock'}
@@ -239,14 +223,15 @@ class TestGitcoinDryRun():
 
     @responses.activate
     def test_raise_for_status(self):
-        responses.add(responses.GET, 'https://gitcoin.co/api/v0.1/bounties/',
-                      json={'mock': 'mock'}, status=401)
+        responses.add(responses.GET, 'https://gitcoin.co/api/v0.1/bounties/', json={'mock': 'mock'}, status=401)
         api = Gitcoin()
         with pytest.raises(requests.exceptions.HTTPError):
             result = api.bounties.all()
 
     def test_extending_config_does_not_leak(self):
+
         class ExtendedBountyConfig(BountyConfig):
+
             def __init__(self):
                 super().__init__()
                 self.params['extra_config'] = (True, None)

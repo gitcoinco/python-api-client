@@ -1,6 +1,5 @@
 import gitcoin.validation
 import pytest
-import requests
 from gitcoin import BountyConfig, Gitcoin
 
 
@@ -9,16 +8,19 @@ def assert_is_list_of_bounties(result):
     for bounty in result:
         assert_is_bounty(bounty)
 
+
 def assert_is_bounty(bounty):
-    assert int == type(bounty['pk'])
-    assert 0 < bounty['pk']
+    assert isinstance(int, bounty['pk'])
+    assert bounty['pk'] > 0
 
 
-@pytest.mark.skipif(not pytest.config.getoption('--liveapi'), reason='Please only test against the live API manually by specifying --live-api.')
+@pytest.mark.skipif(
+    not pytest.config.getoption('--liveapi'),
+    reason='Please only test against the live API manually by specifying --live-api.'
+)
 class TestGitcoinLiveBounties():
 
     filter_examples = {
-        # 'raw_data': ['"'],  ## It's unclear what good examples would be.
         'experience_level': ['Beginner', 'Advanced', 'Intermediate', 'Unknown'],
         'project_length': ['Hours', 'Days', 'Weeks', 'Months', 'Unknown'],
         'bounty_type': ['Bug', 'Security', 'Feature', 'Unknown'],
@@ -39,9 +41,9 @@ class TestGitcoinLiveBounties():
         api = Gitcoin()
         for filter_name, examples in self.filter_examples.items():
             for example in examples:
-                filter = {filter_name:example}
+                filter_kwargs = {filter_name: example}
                 # try:
-                result = api.bounties.filter(**filter).get_page(per_page=1)
+                result = api.bounties.filter(**filter_kwargs).get_page(per_page=1)
                 # except
                 assert_is_list_of_bounties(result)
 
@@ -49,12 +51,12 @@ class TestGitcoinLiveBounties():
         api = Gitcoin()
         cfg = BountyConfig()
         for filter_name, examples in self.filter_examples.items():
-            is_multiple, normalize = cfg.get(filter_name)
+            is_multiple, _ = cfg.get(filter_name)
             if is_multiple:
                 bounties = api.bounties
                 for example in examples:
-                    filter = {filter_name:example}
-                    bounties.filter(**filter)
+                    filter_kwargs = {filter_name: example}
+                    bounties.filter(**filter_kwargs)
                 result = bounties.get_page(per_page=1)
                 assert_is_list_of_bounties(result)
 

@@ -8,20 +8,15 @@ OPTIONS = {
     'bounty_type': ['Bug', 'Security', 'Feature', 'Unknown'],
     'idx_status': ['cancelled', 'done', 'expired', 'open', 'started', 'submitted', 'unknown'],
     'order_by': [
-        'web3_type', 'title', 'web3_created', 'value_in_token', 'token_name',
-        'token_address', 'bounty_type', 'project_length', 'experience_level',
-        'github_url', 'github_comments', 'bounty_owner_address',
-        'bounty_owner_email', 'bounty_owner_github_username',
-        'bounty_owner_name', 'is_open', 'expires_date', 'raw_data', 'metadata',
-        'current_bounty', '_val_usd_db', 'contract_address', 'network',
-        'idx_experience_level', 'idx_project_length', 'idx_status',
-        'issue_description', 'standard_bounties_id', 'num_fulfillments',
-        'balance', 'accepted', 'interested', 'interested_comment',
-        'submissions_comment', 'override_status', 'last_comment_date',
-        'fulfillment_accepted_on', 'fulfillment_submitted_on',
-        'fulfillment_started_on', 'canceled_on', 'snooze_warnings_for_days',
-        'token_value_time_peg', 'token_value_in_usdt', 'value_in_usdt_now',
-        'value_in_usdt', 'value_in_eth', 'value_true', 'privacy_preferences'
+        'web3_type', 'title', 'web3_created', 'value_in_token', 'token_name', 'token_address', 'bounty_type',
+        'project_length', 'experience_level', 'github_url', 'github_comments', 'bounty_owner_address',
+        'bounty_owner_email', 'bounty_owner_github_username', 'bounty_owner_name', 'is_open', 'expires_date',
+        'raw_data', 'metadata', 'current_bounty', '_val_usd_db', 'contract_address', 'network', 'idx_experience_level',
+        'idx_project_length', 'idx_status', 'issue_description', 'standard_bounties_id', 'num_fulfillments', 'balance',
+        'accepted', 'interested', 'interested_comment', 'submissions_comment', 'override_status', 'last_comment_date',
+        'fulfillment_accepted_on', 'fulfillment_submitted_on', 'fulfillment_started_on', 'canceled_on',
+        'snooze_warnings_for_days', 'token_value_time_peg', 'token_value_in_usdt', 'value_in_usdt_now', 'value_in_usdt',
+        'value_in_eth', 'value_true', 'privacy_preferences'
     ]
 }
 

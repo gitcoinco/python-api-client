@@ -6,5 +6,8 @@ from gitcoin.client import Endpoint
 from gitcoin.client import Gitcoin
 
 __all__ = [
-    'Config', 'BountyConfig', 'Endpoint', 'Gitcoin',
+    'Config',
+    'BountyConfig',
+    'Endpoint',
+    'Gitcoin',
 ]
