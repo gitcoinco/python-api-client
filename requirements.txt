@@ -19,7 +19,7 @@ pytest-cache==1.0
 pytest-cov==2.5.1
 pytest-isort==0.2.0
 pytest-runner==4.2
-requests==2.18.4
+requests==2.20.1
 responses==0.9.0
 six==1.11.0
 urllib3==1.22
