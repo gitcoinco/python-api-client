@@ -2,6 +2,8 @@ import gitcoin.validation
 import pytest
 from gitcoin import BountyConfig, Gitcoin
 
+pytestmark = pytest.mark.liveapi
+
 
 def assert_is_list_of_bounties(result):
     assert list == type(result)
@@ -10,14 +12,11 @@ def assert_is_list_of_bounties(result):
 
 
 def assert_is_bounty(bounty):
-    assert isinstance(int, bounty['pk'])
-    assert bounty['pk'] > 0
+    pk = bounty['pk']
+    assert isinstance(pk, int)
+    assert pk > 0
 
 
-@pytest.mark.skipif(
-    not pytest.fixture('--liveapi'),
-    reason='Please only test against the live API manually by specifying --live-api.'
-)
 class TestGitcoinLiveBounties():
 
     filter_examples = {
