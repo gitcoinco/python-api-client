@@ -1,2 +1,4 @@
 include *.md
 include LICENSE.txt
+include Pipfile
+include Pipfile.lock
