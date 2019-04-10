@@ -6,6 +6,8 @@ import requests.exceptions
 import responses
 from gitcoin import BountyConfig, Gitcoin
 
+pymark = pytest.mark.pytestconfig
+
 
 def are_url_queries_equal(url1, url2, *more_urls):
     queries = []
@@ -48,8 +50,8 @@ class TestGitcoinDryRun():
         with pytest.raises(KeyError):
             api.bounties.filter(does_not_exist=True)
 
-    @responses.activate
-    def test_all(self):
+    @classmethod
+    def test_all(cls, responses):
         responses.add(responses.GET, 'https://gitcoin.co/api/v0.1/bounties/', json={'mock': 'mock'}, status=200)
         api = Gitcoin()
         result = api.bounties.all()
@@ -57,8 +59,8 @@ class TestGitcoinDryRun():
         assert len(responses.calls) == 1
         assert are_url_queries_equal(responses.calls[0].request.url, 'https://gitcoin.co/api/v0.1/bounties/')
 
-    @responses.activate
-    def test_filter_pk__gt(self):
+    @classmethod
+    def test_filter_pk__gt(cls, responses):
         responses.add(responses.GET, 'https://gitcoin.co/api/v0.1/bounties/', json={'mock': 'mock'}, status=200)
         api = Gitcoin()
         result = api.bounties.filter(pk__gt=100).all()
@@ -66,8 +68,8 @@ class TestGitcoinDryRun():
         assert len(responses.calls) == 1
         assert are_url_queries_equal(responses.calls[0].request.url, 'https://gitcoin.co/api/v0.1/bounties/?pk__gt=100')
 
-    @responses.activate
-    def test_filter_experience_level(self):
+    @classmethod
+    def test_filter_experience_level(cls, responses):
         responses.add(responses.GET, 'https://gitcoin.co/api/v0.1/bounties/', json={'mock': 'mock'}, status=200)
         api = Gitcoin()
         result = api.bounties.filter(experience_level='Beginner').all()
@@ -79,8 +81,8 @@ class TestGitcoinDryRun():
         with pytest.raises(ValueError):
             api.bounties.filter(experience_level='Rockstar')
 
-    @responses.activate
-    def test_filter_project_length(self):
+    @classmethod
+    def test_filter_project_length(cls, responses):
         responses.add(responses.GET, 'https://gitcoin.co/api/v0.1/bounties/', json={'mock': 'mock'}, status=200)
         api = Gitcoin()
         result = api.bounties.filter(project_length='Hours').all()
@@ -92,8 +94,8 @@ class TestGitcoinDryRun():
         with pytest.raises(ValueError):
             api.bounties.filter(project_length='Minutes')
 
-    @responses.activate
-    def test_filter_bounty_type(self):
+    @classmethod
+    def test_filter_bounty_type(cls, responses):
         responses.add(responses.GET, 'https://gitcoin.co/api/v0.1/bounties/', json={'mock': 'mock'}, status=200)
         api = Gitcoin()
         result = api.bounties.filter(bounty_type='Bug').all()
@@ -105,8 +107,8 @@ class TestGitcoinDryRun():
         with pytest.raises(ValueError):
             api.bounties.filter(bounty_type='Fancy')
 
-    @responses.activate
-    def test_filter_idx_status(self):
+    @classmethod
+    def test_filter_idx_status(cls, responses):
         responses.add(responses.GET, 'https://gitcoin.co/api/v0.1/bounties/', json={'mock': 'mock'}, status=200)
         api = Gitcoin()
         result = api.bounties.filter(idx_status='started').all()
@@ -118,8 +120,8 @@ class TestGitcoinDryRun():
         with pytest.raises(ValueError):
             api.bounties.filter(idx_status='undone')
 
-    @responses.activate
-    def test_filter_2x_bounty_type_paged(self):
+    @classmethod
+    def test_filter_2x_bounty_type_paged(cls, responses):
         responses.add(responses.GET, 'https://gitcoin.co/api/v0.1/bounties/', json={'mock': 'mock'}, status=200)
         api = Gitcoin()
         result = api.bounties.filter(bounty_type='Feature').filter(bounty_type='Bug').get_page()
@@ -130,21 +132,19 @@ class TestGitcoinDryRun():
             'https://gitcoin.co/api/v0.1/bounties/?bounty_type=Feature%2CBug&offset=0&limit=25'
         )
 
-    @responses.activate
-    def test_del_param(self):
+    @classmethod
+    def test_del_param(cls, responses):
         responses.add(responses.GET, 'https://gitcoin.co/api/v0.1/bounties/', json={'mock': 'mock'}, status=200)
-        api = Gitcoin()
-        result = api.bounties.filter(bounty_type='Feature') \
-                ._del_param('bounty_type').filter(bounty_type='Bug').get_page()
-        assert result == {'mock': 'mock'}
+        res = Gitcoin().bounties.filter(bounty_type='Feature')
+        res._del_param('bounty_type').filter(bounty_type='Bug').get_page()
+        assert res == {'mock': 'mock'}
         assert len(responses.calls) == 1
         assert are_url_queries_equal(
-            responses.calls[0].request.url,
-            'https://gitcoin.co/api/v0.1/bounties/?bounty_type=Bug&offset=0&limit=25'
+            responses.calls[0].request.url, 'https://gitcoin.co/api/v0.1/bounties/?bounty_type=Bug&offset=0&limit=25'
         )
 
-    @responses.activate
-    def test_reset_all_params(self):
+    @classmethod
+    def test_reset_all_params(cls, responses):
         responses.add(responses.GET, 'https://gitcoin.co/api/v0.1/bounties/', json={'mock': 'mock'}, status=200)
         api = Gitcoin()
         bounties_api = api.bounties
@@ -166,8 +166,8 @@ class TestGitcoinDryRun():
             responses.calls[1].request.url, 'https://gitcoin.co/api/v0.1/bounties/?bounty_type=Bug&offset=0&limit=25'
         )
 
-    @responses.activate
-    def test_order_by(self):
+    @classmethod
+    def test_order_by(cls, responses):
         responses.add(responses.GET, 'https://gitcoin.co/api/v0.1/bounties/', json={'mock': 'mock'}, status=200)
         api = Gitcoin()
 
@@ -183,24 +183,23 @@ class TestGitcoinDryRun():
         assert result == {'mock': 'mock'}
         assert len(responses.calls) == 2
         assert are_url_queries_equal(
-            responses.calls[1].request.url,
-            'https://gitcoin.co/api/v0.1/bounties/?order_by=is_open&offset=0&limit=25'
+            responses.calls[1].request.url, 'https://gitcoin.co/api/v0.1/bounties/?order_by=is_open&offset=0&limit=25'
         )
 
         with pytest.raises(ValueError):
             api.bounties.order_by('random')
 
-    @responses.activate
-    def test_get(self):
+    @classmethod
+    def test_get(cls, responses):
         responses.add(responses.GET, 'https://gitcoin.co/api/v0.1/bounties/123', json={'mock': 'mock'}, status=200)
         api = Gitcoin()
         result = api.bounties.get(123)
         assert result == {'mock': 'mock'}
         assert len(responses.calls) == 1
-        responses.calls[0].request.url == 'https://gitcoin.co/api/v0.1/bounties/123'
+        assert responses.calls[0].request.url == 'https://gitcoin.co/api/v0.1/bounties/123'
 
-    @responses.activate
-    def test_no_normalize(self):
+    @classmethod
+    def test_no_normalize(cls, responses):
 
         class ExtendedBountyConfig(BountyConfig):
 
@@ -221,8 +220,8 @@ class TestGitcoinDryRun():
             'https://gitcoin.co/api/v0.1/bounties/?no_normalize=not_normal&offset=0&limit=25'
         )
 
-    @responses.activate
-    def test_raise_for_status(self):
+    @classmethod
+    def test_raise_for_status(cls, responses):
         responses.add(responses.GET, 'https://gitcoin.co/api/v0.1/bounties/', json={'mock': 'mock'}, status=401)
         api = Gitcoin()
         with pytest.raises(requests.exceptions.HTTPError):
