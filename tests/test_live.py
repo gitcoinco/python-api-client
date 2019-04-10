@@ -15,10 +15,10 @@ def assert_is_bounty(bounty):
 
 
 @pytest.mark.skipif(
-    not pytest.config.getoption('--liveapi'),
+    not pytest.fixture('--liveapi'),
     reason='Please only test against the live API manually by specifying --live-api.'
 )
-class TestGitcoinLiveBounties():
+class TestGitcoinLiveBounties(pytest.Generator):
 
     filter_examples = {
         'experience_level': ['Beginner', 'Advanced', 'Intermediate', 'Unknown'],
