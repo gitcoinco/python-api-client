@@ -1,0 +1,3 @@
+*               text
+Pipfile         binary -diff -merge
+Pipfile.lock    binary -diff -merge
