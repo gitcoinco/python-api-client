@@ -140,8 +140,7 @@ class TestGitcoinDryRun():
         assert res == {'mock': 'mock'}
         assert len(responses.calls) == 1
         assert are_url_queries_equal(
-            responses.calls[0].request.url,
-            'https://gitcoin.co/api/v0.1/bounties/?bounty_type=Bug&offset=0&limit=25'
+            responses.calls[0].request.url, 'https://gitcoin.co/api/v0.1/bounties/?bounty_type=Bug&offset=0&limit=25'
         )
 
     @classmethod
@@ -184,8 +183,7 @@ class TestGitcoinDryRun():
         assert result == {'mock': 'mock'}
         assert len(responses.calls) == 2
         assert are_url_queries_equal(
-            responses.calls[1].request.url,
-            'https://gitcoin.co/api/v0.1/bounties/?order_by=is_open&offset=0&limit=25'
+            responses.calls[1].request.url, 'https://gitcoin.co/api/v0.1/bounties/?order_by=is_open&offset=0&limit=25'
         )
 
         with pytest.raises(ValueError):
