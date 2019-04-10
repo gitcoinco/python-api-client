@@ -18,7 +18,7 @@ def assert_is_bounty(bounty):
     not pytest.fixture('--liveapi'),
     reason='Please only test against the live API manually by specifying --live-api.'
 )
-class TestGitcoinLiveBounties(pytest.Generator):
+class TestGitcoinLiveBounties():
 
     filter_examples = {
         'experience_level': ['Beginner', 'Advanced', 'Intermediate', 'Unknown'],

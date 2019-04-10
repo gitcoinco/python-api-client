@@ -21,7 +21,7 @@ def are_url_queries_equal(url1, url2, *more_urls):
     return True
 
 
-class TestGitcoinDryRun(pytest.Collector):
+class TestGitcoinDryRun():
 
     def test_are_url_queries_equal(self):
         assert are_url_queries_equal('https://google.com', 'https://google.com')
