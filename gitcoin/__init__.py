@@ -1,9 +1,6 @@
 """Define the Gitcoin API client."""
 
-from gitcoin.client import Config
-from gitcoin.client import BountyConfig
-from gitcoin.client import Endpoint
-from gitcoin.client import Gitcoin
+from gitcoin.client import BountyConfig, Config, Endpoint, Gitcoin
 
 __all__ = [
     'Config',
