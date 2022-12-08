@@ -1,6 +1,6 @@
 apipkg==1.4
 attrs==18.1.0
-certifi==2018.4.16
+certifi==2022.12.7
 chardet==3.0.4
 cookies==2.2.1
 coverage==4.5.1
